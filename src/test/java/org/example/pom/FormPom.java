@@ -111,6 +111,7 @@ public class FormPom {
 
         dateOfBirth.sendKeys(Keys.CONTROL + "a");
         dateOfBirth.sendKeys(birthDateParam);
+        dateOfBirth.sendKeys(Keys.ENTER);
     }
 
     private boolean isValidBirthDate(String birthDateParam) {
@@ -133,9 +134,11 @@ public class FormPom {
         }
     }
 
-    private void setUserSubjects(String[] subs) {
-        subjects.sendKeys();
-        subjects.sendKeys(Keys.ENTER);
+    public void setUserSubjects(String[] subs) {
+        for (String sub : subs) {
+            subjects.sendKeys(sub);
+            subjects.sendKeys(Keys.ENTER);
+        }
     }
 
     public void closeAds() {

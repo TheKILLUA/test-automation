@@ -11,14 +11,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class EdgeBrowserTest {
+public class Driver {
     static public WebDriver getAutoLocalDriver() {
         WebDriverManager.edgedriver().setup();
         return new EdgeDriver();
     }
 
     static public WebDriver getLocalDriver() {
-        System.setProperty("webdriver.edge.driver", "%WEB_DRIVER_PATH%\\msedgedriver.exe");
+        System.setProperty("webdriver.edge.driver", "C:\\webdrivers\\msedgedriver.exe");
         EdgeOptions options = new EdgeOptions();
         options.addArguments("--remote-allow-origins=*");
         return new EdgeDriver(options);

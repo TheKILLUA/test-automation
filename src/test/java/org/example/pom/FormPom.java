@@ -1,9 +1,6 @@
 package org.example.pom;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
@@ -26,7 +23,7 @@ public class FormPom {
     @FindBy(xpath = "//input[@id=\"userEmail\"]")
     WebElement userEmail;
 
-    @FindBy(xpath = "//input[@name=\"gender\"]")
+    @FindBy(xpath = "//div[@id=\"genterWrapper\"]//input[@name=\"gender\"]")
     List<WebElement> genderOptions;
 
     @FindBy(xpath = "//input[@id=\"userNumber\"]")
@@ -37,6 +34,21 @@ public class FormPom {
 
     @FindBy(xpath = "//input[@id=\"subjectsInput\"]")
     WebElement subjects;
+
+    @FindBy(xpath = "//label[@for=\"uploadPicture\"]")
+    WebElement picture;
+
+    @FindBy(xpath = "//textarea[@id=\"currentAddress\"]")
+    WebElement address;
+
+    @FindBy(xpath = "//div[@id=\"stateCity-wrapper\"]//input[@id=\"react-select-3-input\"]")
+    WebElement state;
+
+    @FindBy(xpath = "//div[@id=\"stateCity-wrapper\"]//input[@id=\"react-select-4-input\"]")
+    WebElement city;
+
+    @FindBy(xpath = "//button[@id=\"submit\"]")
+    WebElement submit;
 
     public FormPom(WebDriver driver) {
         this.driver = driver;
@@ -60,34 +72,34 @@ public class FormPom {
         userEmail.sendKeys(userEmailParam);
     }
 
-    public void setUserGender(String genderParam) {
-        WebElement fallback = null;
-        boolean fallbackFlag = false;
-        final String fallbackValue = "Other";
+        public void setUserGender(String genderParam) {
+            WebElement fallback = null;
+            boolean fallbackFlag = false;
+            final String fallbackValue = "Other";
 
-        for (WebElement gender : genderOptions) {
-            String genderValue = Objects.requireNonNull(gender.getAttribute("value"));
-            if (genderValue.equalsIgnoreCase(genderParam)) {
-                if (!gender.isSelected()) {
-                    clickLabelByGender(gender);
+            for (WebElement gender : genderOptions) {
+                String genderValue = Objects.requireNonNull(gender.getAttribute("value"));
+                if (genderValue.equalsIgnoreCase(genderParam)) {
+                    if (!gender.isSelected()) {
+                        clickLabelByInput(gender);
+                    }
+
+                    fallbackFlag = false;
+
+                    break;
                 }
 
-                fallbackFlag = false;
-
-                break;
+                if (genderValue.equalsIgnoreCase(fallbackValue)) {
+                    fallback = gender;
+                    fallbackFlag = true;
+                }
             }
 
-            if (genderValue.equalsIgnoreCase(fallbackValue)) {
-                fallback = gender;
-                fallbackFlag = true;
+            if (fallbackFlag && !fallback.isSelected()) {
+                clickLabelByInput(fallback);
+                logger.warn("Fallback option selected");
             }
         }
-
-        if (fallbackFlag && !fallback.isSelected()) {
-            clickLabelByGender(fallback);
-            logger.warn("Fallback option selected");
-        }
-    }
 
     public void setUserMobileNumber(String mobileNumberParam) {
         final String fallbackValue = "0000000000";
@@ -122,11 +134,11 @@ public class FormPom {
         return false;
     }
 
-    private void clickLabelByGender(WebElement gender) {
-        final String inputId = gender.getAttribute("id");
+    private void clickLabelByInput(WebElement el) {
+        final String inputId = el.getAttribute("id");
 
         if (inputId != null) {
-            WebElement label = gender.findElement(org.openqa.selenium.By.xpath("//label[@for='" + inputId + "']"));
+            WebElement label = el.findElement(org.openqa.selenium.By.xpath("//label[@for='" + inputId + "']"));
 
             if (!label.isSelected()) {
                 label.click();
@@ -135,10 +147,48 @@ public class FormPom {
     }
 
     public void setUserSubjects(String[] subs) {
+        subjects.clear();
+
         for (String sub : subs) {
             subjects.sendKeys(sub);
             subjects.sendKeys(Keys.ENTER);
         }
+    }
+
+    public void setUserHobbies(String[] hobbies) {
+        for (String hobby : hobbies) {
+            WebElement labelElement = driver.findElement(By.xpath(String.format("//div[@id='hobbiesWrapper']//label[normalize-space(text())='%s']",
+                    hobby.replace("'", "\\'").trim())));
+
+            if (!labelElement.isSelected()) {
+                labelElement.click();
+            }
+        }
+    }
+
+//    public void setUserPicture() {
+//        picture.click();
+//    }
+
+    public void setUserAddress(String userAddress) {
+        address.clear();
+        address.sendKeys(userAddress);
+    }
+
+    public void setUserState(String userState) {
+        state.clear();
+        state.sendKeys(userState);
+        state.sendKeys(Keys.ENTER);
+    }
+
+    public void setUserCity(String userCity) {
+        city.clear();
+        city.sendKeys(userCity);
+        city.sendKeys(Keys.ENTER);
+    }
+
+    public void submitForm() {
+        submit.click();
     }
 
     public void closeAds() {

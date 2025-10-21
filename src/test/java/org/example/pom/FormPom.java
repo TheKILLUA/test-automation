@@ -35,7 +35,7 @@ public class FormPom {
     @FindBy(xpath = "//input[@id=\"subjectsInput\"]")
     WebElement subjects;
 
-    @FindBy(xpath = "//label[@for=\"uploadPicture\"]")
+    @FindBy(xpath = "//input[@id=\"uploadPicture\"]")
     WebElement picture;
 
     @FindBy(xpath = "//textarea[@id=\"currentAddress\"]")
@@ -166,9 +166,9 @@ public class FormPom {
         }
     }
 
-//    public void setUserPicture() {
-//        picture.click();
-//    }
+    public void setUserPicture(String userPicture) {
+        picture.sendKeys(userPicture);
+    }
 
     public void setUserAddress(String userAddress) {
         address.clear();

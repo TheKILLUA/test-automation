@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Objects;
 
-public class FormPom {
-    WebDriver driver;
-    JavascriptExecutor js;
+public class FormPom extends Basic {
     private static final Logger logger = LoggerFactory.getLogger(FormPom.class);
 
     @FindBy(xpath = "//input[@id=\"firstName\"]")
@@ -189,17 +187,5 @@ public class FormPom {
 
     public void submitForm() {
         submit.click();
-    }
-
-    public void closeAds() {
-        try {
-            js.executeScript("var elem = document.evaluate(\"//*[@id='adplus-anchor']\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
-                    "elem.parentNode.removeChild(elem);");
-        } catch (Exception ignored) {}
-
-        try {
-            js.executeScript("var elem = document.evaluate(\"//footer\", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;" +
-                    "elem.parentNode.removeChild(elem);");
-        } catch (Exception ignored) {}
     }
 }

@@ -28,7 +28,7 @@ jobs:
       - name: Run selenoid in Docker container
         run: |
           # Run the program in a Docker container
-          docker compose -f docker-compose up -d
+          docker compose -f docker-compose.yml up -d
 
       - name: Wait for container to start
         run: sleep 1

@@ -35,7 +35,6 @@ public class LoginPom extends Basic {
     }
 
     public void submitForm() {
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", submit);
-        js.executeScript("arguments[0].click();", submit);
+        clickWithJs(submit);
     }
 }

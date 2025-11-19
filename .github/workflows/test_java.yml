@@ -20,6 +20,9 @@ jobs:
           java-version: '21'
           cache: 'maven'
 
+      - name: Install Microsoft Edge Stable
+        uses: browser-actions/setup-edge@latest
+
       - name: Pull selenoid container
         run: |
           # Pull the Docker images

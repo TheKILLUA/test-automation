@@ -1,18 +1,21 @@
 package org.example.pom;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPom extends Basic {
-    @FindBy(xpath = "//input[@id=\"userName\"]")
-    WebElement login;
 
-    @FindBy(xpath = "//input[@id=\"password\"]")
-    WebElement password;
+    @FindBy(id = "userName")
+    private WebElement login;
 
-    @FindBy(xpath = "//button[@id=\"login\"]")
-    WebElement submit;
+    @FindBy(id = "password")
+    private WebElement password;
+
+    @FindBy(id = "login")
+    private WebElement submit;
 
     public LoginPom(WebDriver driver) {
         this.driver = driver;
@@ -32,6 +35,7 @@ public class LoginPom extends Basic {
     }
 
     public void submitForm() {
-        submit.click();
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", submit);
+        js.executeScript("arguments[0].click();", submit);
     }
 }

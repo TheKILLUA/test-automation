@@ -3,7 +3,11 @@ package org.example.tests;
 import org.example.pom.FormPom;
 import org.testng.annotations.Test;
 
+import java.nio.file.Paths;
+import java.util.Objects;
+
 public class FormTest extends Basic {
+
     public static final String URL = "https://demoqa.com/automation-practice-form";
     public static final String FIRST_NAME = "Dan";
     public static final String LAST_NAME = "Molache";
@@ -13,7 +17,11 @@ public class FormTest extends Basic {
     public static final String USER_BIRTH_DATE = "15 Mar 2006";
     public static final String[] USER_SUBJECTS = {"Hindi", "Social Studies", "Physics", "Maths"};
     public static final String[] USER_HOBBIES = {"Sports", "Music"};
-    public static final String USER_PICTURE = "C:\\Users\\IT\\IdeaProjects\\maven-project-first\\src\\test\\resources\\test.txt";
+
+    public static final String USER_PICTURE = Objects.requireNonNull(
+            FormTest.class.getClassLoader().getResource("test.txt")
+    ).getPath();
+
     public static final String USER_STATE = "Rajasthan";
     public static final String USER_CITY = "Jaiselmer";
     public static final String USER_ADDRESS = "VIVAN PALACE, AND, near HOTEL, near PETROL PUMP, Gandhi Colony, Gandhi Nagar, Jaiselmer, Rajasthan, India";
@@ -26,13 +34,14 @@ public class FormTest extends Basic {
         form.setFirstName(FIRST_NAME);
         form.setLastName(LAST_NAME);
         form.setUserEmail(USER_EMAIL);
-        form.setUserEmail(USER_EMAIL);
         form.setUserGender(USER_GENDER);
         form.setUserMobileNumber(USER_MOBILE_NUMBER);
         form.setUserBirthDate(USER_BIRTH_DATE);
         form.setUserSubjects(USER_SUBJECTS);
         form.setUserHobbies(USER_HOBBIES);
+
         form.setUserPicture(USER_PICTURE);
+
         form.setUserAddress(USER_ADDRESS);
         form.setUserState(USER_STATE);
         form.setUserCity(USER_CITY);

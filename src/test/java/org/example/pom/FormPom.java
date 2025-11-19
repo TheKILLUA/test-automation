@@ -155,12 +155,15 @@ public class FormPom extends Basic {
 
     public void setUserHobbies(String[] hobbies) {
         for (String hobby : hobbies) {
-            WebElement labelElement = driver.findElement(By.xpath(String.format("//div[@id='hobbiesWrapper']//label[normalize-space(text())='%s']",
-                    hobby.replace("'", "\\'").trim())));
+            String escapedHobby = hobby.replace("'", "\\'").trim();
+            By hobbyLocator = By.xpath("//div[@id='hobbiesWrapper']//label[normalize-space(.)='" + escapedHobby + "']");
 
-            if (!labelElement.isSelected()) {
-                labelElement.click();
-            }
+            WebElement label = driver.findElement(hobbyLocator);
+
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", label);
+            js.executeScript("arguments[0].click();", label);
+
+            logger.info("Selected hobby: {}", hobby);
         }
     }
 
@@ -186,6 +189,7 @@ public class FormPom extends Basic {
     }
 
     public void submitForm() {
-        submit.click();
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", submit);
+        js.executeScript("arguments[0].click();", submit);
     }
 }

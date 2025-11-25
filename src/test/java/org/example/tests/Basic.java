@@ -11,7 +11,7 @@ public class Basic {
 
     @BeforeClass
     public void beforeTest() {
-        driver = Driver.getAutoLocalDriver();
+        driver = Driver.getRemoteDriver();
         driver.manage().window().maximize();
     }
 
@@ -20,6 +20,6 @@ public class Basic {
 
     @AfterClass
     public void afterTest() {
-//        driver.quit();
+        driver.quit();
     }
 }

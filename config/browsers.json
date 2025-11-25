@@ -24,5 +24,16 @@
         "env" : ["ENABLE_VNC=true", "SCREEN_WIDTH=1920", "SCREEN_HEIGHT=1080", "VNC_PASSWORD=secret"]
       }
     }
+  },
+  "edge": {
+    "128.0": {
+      "image": "selenoid/vnc:edge_128.0",
+      "port": "4444",
+      "tmpfs": {"/tmp": "rw"},
+      "capabilities": {
+        "enableVNC": true,
+        "enableVideo": true
+      }
+    }
   }
 }

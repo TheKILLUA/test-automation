@@ -1,23 +1,32 @@
-version: '3'
+version: '3.8'
+
 services:
   selenoid:
     network_mode: bridge
     image: aerokube/selenoid:latest-release
     volumes:
-      - "./config:/etc/selenoid"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./video:/opt/selenoid/video"
-      - "./logs:/opt/selenoid/logs"
+      - "./config:/etc/selenoid"                     # browsers.json лежит тут
+      - "./video:/opt/selenoid/video"                # ← видео будет здесь
+      - "./logs:/opt/selenoid/logs"                  # ← логи сессий (опционально)
+      - "/var/run/docker.sock:/var/run/docker.sock"  # обязательно для динамического запуска контейнеров
     environment:
-      - OVERRIDE_VIDEO_OUTPUT_DIR=$TASK_FOLDER/video
-    command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs"]
-    shm_size: '2gb'
+      - OVERRIDE_VIDEO_OUTPUT_DIR=${TASK_FOLDER:-.}/video   # совместимость с вашим workflow
+    command: [
+      "-conf", "/etc/selenoid/browsers.json",
+      "-video-output-dir", "/opt/selenoid/video",
+      "-log-output-dir", "/opt/selenoid/logs",
+      "-limit", "10",
+      "-session-attempt-timeout", "2m",
+      "-session-delete-timeout", "30s"
+    ]
     ports:
       - "4444:4444"
+    shm_size: '2gb'
+
   selenoid-ui:
-    image: "aerokube/selenoid-ui"
+    image: aerokube/selenoid-ui:latest
     network_mode: bridge
-    links:
+    depends_on:
       - selenoid
     ports:
       - "8080:8080"

@@ -1,43 +1,8 @@
 {
-  "edge": {
-    "default": "142.0",
-    "versions": {
-      "142.0": {
-        "image": "selenium/node-edge-debug:142.0-20251101",
-        "port": "4444",
-        "path": "/wd/hub",
-        "tmpfs": { "/tmp": "size=128m" },
-        "env": [
-          "SE_START_VNC=true",
-          "SE_VNC_PASSWORD=secret",
-          "SE_SCREEN_WIDTH=1920",
-          "SE_SCREEN_HEIGHT=1080",
-          "SE_SCREEN_DEPTH=24"
-        ]
-      },
-      "latest": {
-        "image": "selenium/node-edge-debug:latest",
-        "port": "4444",
-        "path": "/wd/hub",
-        "tmpfs": { "/tmp": "size=128m" },
-        "env": [
-          "SE_START_VNC=true",
-          "SE_VNC_PASSWORD=secret",
-          "SE_SCREEN_WIDTH=1920",
-          "SE_SCREEN_HEIGHT=1080",
-          "SE_SCREEN_DEPTH=24"
-        ]
-      }
-    }
-  },
   "chrome": {
-    "default": "128.0",
-    "versions": {
-      "128.0": {
-        "image": "selenoid/vnc_chrome:128.0",
-        "port": "4444",
-        "path": "/"
-      }
+    "128.0": {
+      "image": "selenoid/vnc_chrome:128.0",
+      "tmpfs": { "/tmp": "rw" }
     }
   }
 }

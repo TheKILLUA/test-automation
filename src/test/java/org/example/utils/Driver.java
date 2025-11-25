@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;   // ← вот это главное!
+import org.openqa.selenium.chrome.ChromeDriver;    // ← если где-то используете локально
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -42,25 +44,25 @@ public class Driver {
     }
 
     public static RemoteWebDriver getRemoteDriver() {
-        EdgeOptions options = new EdgeOptions();
-        options.setCapability("browserName", "edge");
-        options.setCapability("browserVersion", "142.0");  // Точно совпадает с образом
+        ChromeOptions options = new ChromeOptions();  // ← теперь Chrome!
+
+        options.setCapability("browserName", "chrome");
+        options.setCapability("browserVersion", "128.0");
 
         options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            put("name", "Edge Test");
-            put("sessionTimeout", "15m");
-            put("enableVideo", true);  // Видео запишется!
-            put("enableVNC", true);    // VNC для просмотра в UI
-            put("enableLog", true);
-            put("videoScreenSize", "1920x1080");
-            put("videoFrameRate", 24);
-            put("videoCodec", "libx264");  // Для качества
+            put("enableVideo", true);
+            put("enableVNC", true);
+            put("videoName", "chrome-test.mp4");     // красивое имя файла
+            put("sessionTimeout", "10m");
         }});
 
         try {
-            return new RemoteWebDriver(URI.create("http://127.0.0.1:4444/wd/hub").toURL(), options);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Selenoid connection failed", e);
+            return new RemoteWebDriver(
+                    URI.create("http://127.0.0.1:4444/wd/hub").toURL(),
+                    options
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Не удалось подключиться к Selenoid (Chrome)", e);
         }
     }
 }

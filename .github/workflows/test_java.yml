@@ -48,8 +48,8 @@ jobs:
       - name: Wait selenoid status
         run: curl http://127.0.0.1:4444/status
 
-      - name: Build with Maven
-        run: mvn test
+      - name: Run tests
+        run: mvn test -Dwebdriver.driver=remote   # или любая переменная, которую проверяете
 
       - name: Wait for video
         run: sleep 10  # Даёт время на сохранение MP4

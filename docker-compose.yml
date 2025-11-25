@@ -1,30 +1,20 @@
-version: '3.8'  # Обновил версию для лучшей совместимости
+version: '3.8'
 
 services:
   selenoid:
-    image: aerokube/selenoid:latest-release
     network_mode: bridge
+    image: aerokube/selenoid:latest-release
     volumes:
-      - "./config:/etc/selenoid"                     # browsers.json с Edge
-      - "/var/run/docker.sock:/var/run/docker.sock"  # Для динамического pull образов
-      - "./video:/opt/selenoid/video"                # Видео сохраняется здесь (MP4 по session-id)
-      - "./logs:/opt/selenoid/logs"                  # Логи сессий
+      - "./config:/etc/selenoid"
+      - "./video:/opt/selenoid/video"        # ← видео будет здесь
+      - "./logs:/opt/selenoid/logs"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
-      - OVERRIDE_VIDEO_OUTPUT_DIR=${TASK_FOLDER:-.}/video  # Совместимо с вашим env
-    command:
-      - "-conf"
-      - "/etc/selenoid/browsers.json"
-      - "-video-output-dir"
-      - "/opt/selenoid/video"
-      - "-log-output-dir"
-      - "/opt/selenoid/logs"
-      - "-container-network"
-      - "bridge"  # Для стабильности
-      - "-video-recorder-image"
-      - "selenoid/video-recorder:latest-release"  # Встроенный recorder для видео
+      - OVERRIDE_VIDEO_OUTPUT_DIR=${TASK_FOLDER:-.}/video
+    command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video"]
     ports:
       - "4444:4444"
-    shm_size: '2gb'  # Обязательно для браузеров
+    shm_size: '2gb'
 
   selenoid-ui:
     image: aerokube/selenoid-ui:latest

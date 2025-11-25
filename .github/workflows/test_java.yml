@@ -23,11 +23,19 @@ jobs:
       - name: Install Microsoft Edge Stable
         uses: browser-actions/setup-edge@latest
 
-      - name: Pull selenoid container
+      - name: Pull the Docker images
         run: |
-          # Pull the Docker images
-          docker pull selenoid/vnc_chrome:128.0
+          docker pull selenoid/vnc_chrome:128.0  # Для совместимости
           docker pull selenoid/video-recorder:latest-release
+          docker pull selenium/node-edge-debug:142.0-20251101  # Для Edge 142
+
+      - name: Setup config
+        run: |
+          mkdir -p config video logs
+          cat <<EOF > config/browsers.json
+          {  # Вставьте JSON выше
+          }
+          EOF
 
       - name: Run selenoid in Docker container
         run: |
@@ -42,6 +50,9 @@ jobs:
 
       - name: Build with Maven
         run: mvn test
+
+      - name: Wait for video
+        run: sleep 10  # Даёт время на сохранение MP4
 
       - name: Uploading report
         uses: actions/upload-artifact@v4

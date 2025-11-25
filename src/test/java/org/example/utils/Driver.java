@@ -43,25 +43,24 @@ public class Driver {
 
     public static RemoteWebDriver getRemoteDriver() {
         EdgeOptions options = new EdgeOptions();
-        options.setCapability("browserVersion", "128.0");
+        options.setCapability("browserName", "edge");
+        options.setCapability("browserVersion", "142.0");  // Точно совпадает с образом
+
         options.setCapability("selenoid:options", new HashMap<String, Object>() {{
-            put("name", "Test badge...");
+            put("name", "Edge Test");
             put("sessionTimeout", "15m");
-            put("env", new ArrayList<String>() {{
-                add("TZ=UTC");
-            }});
-            put("enableVideo", true);
-            put("enableVNC", true);
+            put("enableVideo", true);  // Видео запишется!
+            put("enableVNC", true);    // VNC для просмотра в UI
             put("enableLog", true);
-            put("noSandbox", true);
-            put("headless", true);
+            put("videoScreenSize", "1920x1080");
+            put("videoFrameRate", 24);
+            put("videoCodec", "libx264");  // Для качества
         }});
 
         try {
             return new RemoteWebDriver(URI.create("http://127.0.0.1:4444/wd/hub").toURL(), options);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("Selenoid connection failed", e);
         }
     }
 }

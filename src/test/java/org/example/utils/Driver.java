@@ -58,7 +58,7 @@ public class Driver {
         }});
 
         try {
-            return new RemoteWebDriver(URI.create("http://localhost:4444/wd/hub").toURL(), options);
+            return new RemoteWebDriver(URI.create("http://10.1.0.222:4444/wd/hub").toURL(), options);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return null;
